@@ -9,7 +9,6 @@ import (
 )
 
 type Book struct {
-	GRBookID  string
 	Title     string
 	Author    string
 	Rating    string
@@ -44,7 +43,6 @@ func main() {
 		}
 
 		bookLine := Book{
-			GRBookID:  record[0],
 			Title:     record[1],
 			Author:    record[2],
 			ISBN:      record[5],
