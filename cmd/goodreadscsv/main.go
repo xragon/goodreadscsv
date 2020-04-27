@@ -15,6 +15,8 @@ type Book struct {
 	Rating    string
 	DateRead  string
 	DateAdded string
+	ISBN      string
+	ISBN13    string
 }
 
 func main() {
@@ -45,6 +47,8 @@ func main() {
 			GRBookID:  record[0],
 			Title:     record[1],
 			Author:    record[2],
+			ISBN:      record[5],
+			ISBN13:    record[6],
 			Rating:    record[7],
 			DateRead:  record[14],
 			DateAdded: record[15],
