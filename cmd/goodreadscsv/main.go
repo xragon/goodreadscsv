@@ -16,6 +16,7 @@ type Book struct {
 	DateAdded string
 	ISBN      string
 	ISBN13    string
+	Status    string
 }
 
 func main() {
@@ -50,6 +51,7 @@ func main() {
 			Rating:    record[7],
 			DateRead:  record[14],
 			DateAdded: record[15],
+			Status:    record[18],
 		}
 		fmt.Println(bookLine)
 
