@@ -1,0 +1,1 @@
+flyway -configFiles=migration/conf/flyway.conf -locations=filesystem:./migration/sql/ migrate
