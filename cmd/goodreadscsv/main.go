@@ -1,23 +1,28 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/csv"
 	"fmt"
 	"io"
 	"log"
 	"os"
+	"strconv"
+	"time"
+
+	"github.com/xragon/goodreadscsv/internal/goodreads"
 )
 
-type Book struct {
-	Title     string
-	Author    string
-	Rating    string
-	DateRead  string
-	DateAdded string
-	ISBN      string
-	ISBN13    string
-	Status    string
-}
+// type Book struct {
+// 	Title     string
+// 	Author    string
+// 	Rating    string
+// 	DateRead  string
+// 	DateAdded string
+// 	ISBN      string
+// 	ISBN13    string
+// 	Status    string
+// }
 
 // func main() {
 // 	// postgresql.Read()
@@ -39,7 +44,6 @@ func main() {
 	defer csvFile.Close()
 	// r := csv.NewReader(strings.NewReader(string(dat)))
 	r := csv.NewReader(csvFile)
-
 	for {
 		record, err := r.Read()
 		if err == io.EOF {
@@ -49,16 +53,47 @@ func main() {
 			log.Fatal(err)
 		}
 
-		bookLine := Book{
-			Title:     record[1],
-			Author:    record[2],
-			ISBN:      record[5],
-			ISBN13:    record[6],
-			Rating:    record[7],
-			DateRead:  record[14],
-			DateAdded: record[15],
-			Status:    record[18],
+		i64, _ := strconv.ParseInt(record[7], 10, 32)
+		rating := int32(i64)
+
+		layoutISO := "2006/01/02" // 2020/01/29
+
+		var dateread time.Time
+
+		if len(record[14]) > 0 {
+			dateread, _ = time.Parse(
+				layoutISO,
+				record[14])
 		}
+
+		dateadded, _ := time.Parse(
+			layoutISO,
+			record[15],
+		)
+
+		fmt.Println(len(record[14]))
+		fmt.Println(len(record[15]))
+		fmt.Println(dateread, dateadded)
+
+		bookLine := goodreads.Book{
+			Title:  record[1],
+			Author: record[2],
+			ISBN:   record[5],
+			ISBN13: record[6],
+			Rating: rating,
+			// DateRead:  dateread,
+			// DateAdded: record[15],
+			Status: record[18],
+		}
+
+		bookLine.DateAdded.Time = dateadded
+		bookLine.DateAdded.Valid = true
+
+		bookLine.DateRead = sql.NullTime{
+			Time:  dateread,
+			Valid: true,
+		}
+
 		fmt.Println(bookLine)
 
 	}
