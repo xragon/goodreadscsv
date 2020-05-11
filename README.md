@@ -19,3 +19,7 @@ Import a subset the goodreads CSV export into a postgres database
 `$go run main.go -path path/to/file.csv`
 
 If no file path is provided it will default to the working directory and the default download filename "goodreads_library_export.csv".
+
+## Export CSV From GoodReads
+
+https://help.goodreads.com/s/article/How-do-I-import-or-export-my-books-1553870934590
