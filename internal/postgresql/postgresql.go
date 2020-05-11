@@ -98,9 +98,9 @@ func ReadSqlx() {
 }
 
 func (s *store) WriteRecord(book Book) error {
-	query := `INSERT INTO books (id, title, author, rating, isbn, isbn13, status) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	query := `INSERT INTO books (id, title, author, rating, date_read, date_added, isbn, isbn13, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 
-	_, err := s.DB.Exec(query, book.ID, book.Title, book.Author, book.Rating, book.ISBN, book.ISBN13, book.Status)
+	_, err := s.DB.Exec(query, book.ID, book.Title, book.Author, book.Rating, book.DateRead, book.DateAdded, book.ISBN, book.ISBN13, book.Status)
 	if err != nil {
 		return err
 	}
