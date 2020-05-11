@@ -71,10 +71,10 @@ func Import() error {
 }
 
 func parseDate(date string) sql.NullTime {
-	layoutISO := "2006/01/02" // 2020/01/29
+	layout := "2006/01/02" // 2020/01/29
 	if len(date) > 0 {
 		parsedDate, _ := time.Parse(
-			layoutISO,
+			layout,
 			date)
 		return sql.NullTime{
 			Time:  parsedDate,
