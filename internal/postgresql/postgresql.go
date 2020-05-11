@@ -45,35 +45,7 @@ func NewStore() (GoodreadsStore, error) {
 	return s, nil
 }
 
-// func Read() {
-// 	conn, err := pgx.Connect(context.Background(), "postgresql://localhost:5432/books?user=books&password=books")
-// 	if err != nil {
-// 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-// 		os.Exit(1)
-// 	}
-// 	defer conn.Close(context.Background())
-// 	println("connnection successful")
-
-// 	book := Book{}
-// 	// err = conn.QueryRow(context.Background(), "SELECT * FROM books").Scan(&book)
-// 	// // book, err = conn.Query(context.Background(), "select * from books where")
-// 	// if err != nil {
-// 	// 	fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-// 	// 	os.Exit(1)
-// 	// }
-
-// 	row := conn.QueryRow(context.Background(), `SELECT * FROM books`)
-// 	switch err := row.Scan(&book.ID, &book.Title, &book.Author, &book.Rating, &book.DateRead, &book.DateAdded, &book.ISBN, &book.ISBN13, &book.Status); err {
-// 	// switch err := row.Scan(&book); err {
-// 	case sql.ErrNoRows:
-// 		fmt.Println("No rows were returned!")
-// 	case nil:
-// 		fmt.Println(book)
-// 	default:
-// 		panic(err)
-// 	}
-// }
-
+// ReadSqlx is a practice function to be replaced
 func ReadSqlx() {
 	db, err := sqlx.Connect("pgx", "postgresql://localhost:5432/books?user=books&password=books")
 	if err != nil {
@@ -97,6 +69,7 @@ func ReadSqlx() {
 	fmt.Println(book)
 }
 
+// WriteRecord will store a Book object in the database
 func (s *store) WriteRecord(book Book) error {
 	query := `INSERT INTO books (id, title, author, rating, date_read, date_added, isbn, isbn13, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 
