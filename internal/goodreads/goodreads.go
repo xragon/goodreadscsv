@@ -27,8 +27,8 @@ type Book struct {
 }
 
 // Import a segment section of a Goodreads CSV in postgresql
-func Import() error {
-	csvFile, err := os.Open("goodreads_library_export.csv")
+func Import(filename string) error {
+	csvFile, err := os.Open(filename)
 
 	if err != nil {
 		return err
