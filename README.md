@@ -11,4 +11,10 @@ Import a subset the goodreads CSV export into a postgres database
 ## Setup
 
 ### Create Database
-`flyway -configFiles=migration/conf/flyway.conf -locations=filesystem:./migration/sql/ migrate`
+`$flyway -configFiles=migration/conf/flyway.conf -locations=filesystem:./migration/sql/ migrate`
+
+## Use
+
+`$main.go -path path/to/file.csv`
+
+If no file path is provided it will default to the working directory and the default download filename "goodreads_library_export.csv".
