@@ -3,7 +3,6 @@ package goodreads
 import (
 	"database/sql"
 	"encoding/csv"
-	"fmt"
 	"io"
 	"os"
 	"strconv"
@@ -11,29 +10,21 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
+	"github.com/xragon/goodreadscsv/internal/postgresql"
 )
-
-// Book is a subsection of a Goodreads CSV entry
-type Book struct {
-	ID        uuid.UUID    `db:"id"`
-	Title     string       `db:"title"`
-	Author    string       `db:"author"`
-	Rating    int32        `db:"rating"`
-	DateRead  sql.NullTime `db:"date_read"`
-	DateAdded sql.NullTime `db:"date_added"`
-	ISBN      string       `db:"isbn"`
-	ISBN13    string       `db:"isbn13"`
-	Status    string       `db:"status"`
-}
 
 // Import a segment section of a Goodreads CSV in postgresql
 func Import(filename string) error {
 	csvFile, err := os.Open(filename)
-
 	if err != nil {
 		return err
 	}
 	defer csvFile.Close()
+
+	gr, err := postgresql.NewStore()
+	if err != nil {
+		return err
+	}
 
 	r := csv.NewReader(csvFile)
 	for {
@@ -53,7 +44,7 @@ func Import(filename string) error {
 		i64, _ := strconv.ParseInt(record[7], 10, 32)
 		rating := int32(i64)
 
-		bookLine := Book{
+		bookLine := postgresql.Book{
 			ID:        bookid,
 			Title:     record[1],
 			Author:    record[2],
@@ -65,7 +56,8 @@ func Import(filename string) error {
 			Status:    record[18],
 		}
 
-		fmt.Println(bookLine)
+		// fmt.Println(bookLine)
+		gr.WriteRecord(bookLine)
 	}
 	return nil
 }
